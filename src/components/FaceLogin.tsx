@@ -21,10 +21,13 @@ const FaceLogin: React.FC<FaceLoginProps> = ({ onSuccess }) => {
           description: "ยินดีต้อนรับกลับมา",
         });
         
-        // Simulate user data
+        // Simulate user data with random position for demo
+        const position = Math.random() > 0.5 ? 'student' : 'teacher';
+        
         onSuccess({
           name: "ผู้ใช้ตัวอย่าง",
           email: "user@example.com",
+          position: position,
           loginTime: new Date().toLocaleString('th-TH')
         });
       } else {

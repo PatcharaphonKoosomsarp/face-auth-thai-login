@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import CameraCapture from './CameraCapture';
 
@@ -16,6 +17,7 @@ const FaceRegister: React.FC<FaceRegisterProps> = ({ onComplete }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    position: 'student', // 'student' or 'teacher'
     faceData: ''
   });
   const { toast } = useToast();
@@ -24,6 +26,13 @@ const FaceRegister: React.FC<FaceRegisterProps> = ({ onComplete }) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
+    }));
+  };
+
+  const handlePositionChange = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      position: value
     }));
   };
 
@@ -43,12 +52,12 @@ const FaceRegister: React.FC<FaceRegisterProps> = ({ onComplete }) => {
   };
 
   const handleNextStep = () => {
-    if (formData.name && formData.email) {
+    if (formData.name && formData.email && formData.position) {
       setStep(2);
     } else {
       toast({
         title: "ข้อมูลไม่ครบถ้วน",
-        description: "กรุณากรอกชื่อและอีเมลให้ครบถ้วน",
+        description: "กรุณากรอกข้อมูลให้ครบถ้วน",
         variant: "destructive"
       });
     }
@@ -84,6 +93,20 @@ const FaceRegister: React.FC<FaceRegisterProps> = ({ onComplete }) => {
               value={formData.email}
               onChange={handleInputChange}
             />
+          </div>
+
+          <div className="space-y-3">
+            <Label>ตำแหน่ง</Label>
+            <RadioGroup value={formData.position} onValueChange={handlePositionChange}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="student" id="student" />
+                <Label htmlFor="student">นักศึกษา</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="teacher" id="teacher" />
+                <Label htmlFor="teacher">อาจารย์</Label>
+              </div>
+            </RadioGroup>
           </div>
           
           <Button 
